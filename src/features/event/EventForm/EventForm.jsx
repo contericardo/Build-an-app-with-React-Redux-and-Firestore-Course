@@ -1,7 +1,9 @@
 import React, { Component } from "react";
 import { Segment, Form, Button } from "semantic-ui-react";
 
+// Using id:null in the emptyEvent, here also
 const emptyEvent = {
+  id: null,
   title: "",
   date: "",
   city: "",
@@ -16,28 +18,26 @@ class EventForm extends Component {
 
   // Did Mount
   componentDidMount() {
-    console.log("(componentDidMount)Selected Event:", this.props.selectedEvent);
+    console.log(
+      "(componentDidMount)Selected Event id:",
+      this.props.selectedEvent.id
+    );
 
-    if (this.props.selectedEvent.id) {
-      console.log(
-        "(componentDidMount):",
-        "NOT null !!!",
-        this.props.selectedEvent
-      );
+    if (this.props.selectedEvent.id !== null) {
+      // id NOT null, lets fill the form !
+      console.log("(componentDidMount): id NOT null:");
       this.setState({
         event: this.props.selectedEvent
       });
     } else {
-      // added ELSE...
-      console.log(
-        "(componentDidMount):",
-        "is null !!!",
-        this.props.selectedEvent
-      );
+      // id is NULL, lets make event empty !
+      console.log("(componentDidMount): id is NULL");
       this.setState({
         event: emptyEvent
       });
     }
+
+    console.log("(componentWillReceiveProps) event: ", this.state.event);
   }
 
   // Will Receive Props
@@ -52,8 +52,8 @@ class EventForm extends Component {
       nextProps.selectedEvent
     );
     // sets event to show in EventForm...
-    if (nextProps.selectedEvent === null) {
-      console.log("(componentWillReceiveProps):", "is null !!!");
+    if (nextProps.selectedEvent.id === null) {
+      console.log("(componentWillReceiveProps):", "id is null !!!");
       this.setState({
         event: emptyEvent
       });
@@ -62,18 +62,27 @@ class EventForm extends Component {
         event: nextProps.selectedEvent
       });
     }
+    console.log("(componentWillReceiveProps) event: ", this.state.event);
   }
 
   // Form Submitted
   onFormSubmit = evt => {
     console.log("(onFormSubmit)this.state.event.id: ", this.state.event.id);
     evt.preventDefault();
-    if (this.state.event.id) {
+    if (this.state.event.id !== null) {
       // Lets UPDATE the event
       this.props.updateEvent(this.state.event);
     } else {
-      // Lets CREATE (register) an event
-      this.props.createEvent(this.state.event);
+      // Lets CREATE (register) an event  (the ID is created in the "createEvent" routine)
+      const eventParm = this.state.event;
+      this.setState({
+        event: emptyEvent
+      });
+      console.log(
+        "(onFormSubmit) just set this.state.event: [empty]",
+        this.state.event.id
+      );
+      this.props.createEvent(eventParm);
     }
   };
 
@@ -90,12 +99,16 @@ class EventForm extends Component {
       "(rendering)this.props.selectedEvent!!!!:",
       this.props.selectedEvent
     );
+    console.log("(rendering)this.state.Event!!!!:", this.state.event);
 
     return (
       <Segment>
         <Form onSubmit={this.onFormSubmit}>
           <Form.Field>
-            <label> </label>
+            <label>
+              {"#"}
+              {this.state.event.id}
+            </label>
             <label> Event Title </label>{" "}
             <input
               name="title"

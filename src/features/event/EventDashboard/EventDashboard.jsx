@@ -53,7 +53,9 @@ const eventsDashboardList = [
   }
 ];
 
+// Using id:null in the emptyEvent
 const emptyEvent = {
+  id: null,
   title: "",
   date: "",
   city: "",
@@ -72,15 +74,15 @@ class EventDashboard extends Component {
     };
   }
 
-  // When clicking the "New Event" button
+  // When clicking the "New Event" button: show form
   handleNewEvent = () => {
-    console.log("(handleNewEvent-1)  starting");
+    console.log("(handleNewEvent/1) starting");
     this.setState({
       isOpen: true,
-      selectedEvent: emptyEvent
+      selectedEvent: emptyEvent // lets send down an empty event !
     });
     console.log(
-      "(handleNewEvent-2) selectedEvent [id  should be  null !!! ]:",
+      "(handleNewEvent/2) selectedEvent [id  should be  null !!! ]:",
       this.state.selectedEvent
     );
   };

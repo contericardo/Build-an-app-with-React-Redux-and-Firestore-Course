@@ -1,3 +1,18 @@
+
+Click "New Event" button
+Shows an empty form (I added the event id after the "#" in the top of the form)
+Fill "Event Title" with "A"
+Press "Submit"
+The form desapears and a new event by title "A" is added to the list
+Press "New Event" again
+The event "A", just registered, is shown !
+
+(In the console it can be seen that the event.Id is null, as should be, all the time...)
+
+
+
+
+
  if (this.props.selectedEvent.id !== null) {
       console.log(
         "(componentDidMount):",
